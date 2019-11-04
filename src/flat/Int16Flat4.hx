@@ -4,7 +4,7 @@ import haxe.io.Int16Array;
 abstract Int16Flat4( Int16Array ) {
     
     public inline function new( len: Int ){
-        this = new Int16Flat4( len );
+        this = new Int16Array( len );
         this[0] = 0;
     }
     
