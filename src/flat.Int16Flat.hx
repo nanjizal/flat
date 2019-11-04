@@ -1,4 +1,4 @@
-package;
+package flat;
 import haxe.io.Int16Array;
 // arr[0] defines pos the position, pos is used to get items
 abstract Int16Flat4( Int16Array ) {
