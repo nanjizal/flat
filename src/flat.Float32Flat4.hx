@@ -1,4 +1,4 @@
-package;
+package flat;
 import haxe.io.Float32Array; // js.lib.Float32Array
 // arr[0] defines pos the position, pos is used to get items
 abstract Float32Flat4( Float32Array ) {
