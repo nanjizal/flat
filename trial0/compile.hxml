@@ -1,0 +1,10 @@
+-js bin/test.js
+-cp ../src
+#-debug
+-main Main
+-D js-flatten 
+-dce full
+-D no_inline
+--next
+-cmd echo '<!DOCTYPE html><meta charset="UTF-8"><html><body><script src="test.js"></script></body></html>' >bin/index.html
+-cmd open bin/index.html
