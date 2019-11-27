@@ -1,5 +1,6 @@
 -js bin/test.js
 -cp ../src
+-lib geom
 #-debug
 -main Main
 -D js-flatten 

@@ -1,5 +1,7 @@
 package flat;
 import flat.Float32Flat9;
+import geom.Matrix4x3;
+import geom.Matrix1x4;
 // effectively 2D with z coordinates for depth etc... at the moment.
 @:forward
 abstract Float32FlatTriangle( Float32Flat9 ){
@@ -62,11 +64,11 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         this[ 6 ] = v;
         return v;
     }
-    public var ay( get, set ): Float;
-    function get_by(): Float {
+    public var cy( get, set ): Float;
+    function get_cy(): Float {
         return this[ 7 ];
     }
-    function set_by( v: Float ): Float {
+    function set_cy( v: Float ): Float {
         this[ 7 ] = v;
         return v;
     }
@@ -78,9 +80,36 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         this[ 8 ] = v;
         return v;
     }
+    public
+    function transform( m: Matrix4x3 ){
+        var pa = new Matrix1x4( { x: ax, y: ay, z: az, w: 1. } );
+        var pb = new Matrix1x4( { x: bx, y: by, z: bz, w: 1. } );
+        var pc = new Matrix1x4( { x: cx, y: cy, z: cz, w: 1. } );
+        pa.transformPoint( m );
+        pb.transformPoint( m );
+        pc.transformPoint( m );
+        ax = pa.x;
+        ay = pa.y;
+        az = pa.z;
+        bx = pb.x;
+        by = pb.y;
+        bz = pb.z;
+        cx = pb.x;
+        cy = pb.y;
+        cz = pb.z; 
+    }
+    public
+    function transformAll( m: Matrix4x3 ) {
+        this.pos = 0;
+        for( i in 0...this.length ){
+            transform( m );
+            this.next();
+        }
+    }
+    @:keep
     public function triangle( ax_: Float, ay_: Float, az_: Float
                             , bx_: Float, by_: Float, bz_: Float
-                            , cx_: Float, cy_: Float, cz_ : Float ){
+                            , cx_: Float, cy_: Float, cz_: Float ){
         ax = ax_;
         ay = ay_;
         az = az_;
@@ -91,7 +120,7 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         cy = cy_;
         cz = cz_;
         // assume shape is 2D with depth at moment.
-        windingAdjusted = adjustWinding();
+        var windingAdjusted = adjustWinding();
         if( windingAdjusted ){
             ax = ax_;
             ay = ay_;
@@ -100,14 +129,17 @@ abstract Float32FlatTriangle( Float32Flat9 ){
             cx = bx_;
             cy = by_;
         }
+        return windingAdjusted;
     }
     public function adjustWinding():Bool { // check sign
         return ( (ax * by - bx * ay) + (bx * cy - cx * by) + (cx * ay - ax * cy) )>0;
     }
     public var x( get, set ): Float;
+    inline
     function get_x() {
         return Math.min( Math.min( ax, bx ), cx );
     }
+    inline
     function set_x( x: Float ): Float {
         var dx = x - get_x();
         ax = ax + dx;
@@ -116,9 +148,11 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         return x;
     }
     public var y( get, set ): Float;   
+    inline
     function get_y(): Float {
         return Math.min( Math.min( ay, by ), cy );
     }
+    inline
     function set_y( y: Float ): Float {
         var dy = y - get_y();
         ay = ay + dy;
@@ -126,13 +160,33 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         cy = cy + dy;
         return y;
     }
+    public var z( get, set ): Float;   
+    inline
+    function get_z(): Float {
+        return Math.min( Math.min( az, bz ), cz );
+    }
+    inline
+    function set_z( z: Float ): Float {
+        var dz = z - get_z();
+        az = az + dz;
+        bz = bz + dz;
+        cz = cz + dz;
+        return z;
+    }
     public var right( get, never ): Float;
-    public function get_right(): Float {
+    inline
+    function get_right(): Float {
         return Math.max( Math.max( ax, bx ), cx );
     }
     public var bottom( get, never ): Float;
-    public function get_bottom(): Float {
+    inline
+    function get_bottom(): Float {
         return Math.max( Math.max( ay, by ), cy );
+    }
+    public var back( get, never ): Float;
+    inline
+    function get_back(): Float {
+        return Math.max( Math.max( az, bz ), cz );
     }
     function moveDelta( dx: Float, dy: Float ){
         ax += dx;
@@ -142,15 +196,21 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         cx += dx;
         cy += dy;
     }
+    public static inline
+    function sign( n: Float ): Int {
+        return Std.int( Math.abs( n )/n );
+    }
     // no bounds checking
-    public inline function liteHit( px: Float, py: Float ): Bool {
+    public inline
+    function liteHit( px: Float, py: Float ): Bool {
         var planeAB = ( ax - px )*( by - py ) - ( bx - px )*( ay - py );
         var planeBC = ( bx - px )*( cy - py ) - ( cx - px )*( by - py );
         var planeCA = ( cx - px )*( ay - py ) - ( ax - px )*( cy - py );
-        return Algebra.sign( planeAB ) == Algebra.sign( planeBC ) && Algebra.sign( planeBC ) == Algebra.sign( planeCA );
+        return sign( planeAB ) == sign( planeBC ) && sign( planeBC ) == sign( planeCA );
     }
     //http://www.emanueleferonato.com/2012/06/18/algorithm-to-determine-if-a-point-is-inside-a-triangle-with-mathematics-no-hit-test-involved/
-    public function fullHit( px: Float, py: Float ): Bool {
+    public
+    function fullHit( px: Float, py: Float ): Bool {
         if( px > x && px < right && py > y && py < bottom ) return true;
         return liteHit( px, py );
     }
@@ -188,5 +248,22 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         by += y;
         cx += x;
         cy += y;
+    }
+    public inline
+    function prettyString(){
+        return  '{ ax: ' + ax + ', ay: ' + ay + ', az ' + az + ' }' + '\n' +
+                '{ bx: ' + bx + ', by: ' + by + ', bz ' + bz + ' }' + '\n' +
+                '{ cx: ' + cx + ', cy: ' + cy + ', az ' + cz + ' }' + '\n';
+    }
+    public inline
+    function prettyAll(){
+        this.pos = 0;
+        var str = 'Float32FlatTriangle: \n';
+        for( i in 0...this.length ) {
+            str += prettyString();
+            this.next();
+        }
+        this.pos = 0;
+        return str;
     }
 }

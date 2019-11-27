@@ -1,5 +1,14 @@
 import js.Browser;
 import flat.Float32FlatRGBA;
+import flat.Float32FlatTriangle;
+import flat.Int32Flat4;
+import flat.UInt16Flat4;
+import flat.FloatFlat4;
+import flat.IntFlat4;
+import flat.Int32Flat9;
+import flat.UInt16Flat9;
+import flat.FloatFlat9;
+import flat.IntFlat9;
 //import AbstractEnumTools;
 enum abstract AppColors( Int ) to Int from Int {
     var Violet      = 0xFF9400D3;
@@ -19,24 +28,33 @@ enum abstract AppColors( Int ) to Int from Int {
 
 class Main {
     static function main() {
-        var button = Browser.document.createButtonElement();
-        button.textContent = "Click me!";
-        button.onclick = function(event) {
-            Browser.alert("Haxe is great");
-        }
-        Browser.document.body.appendChild(button);
-        //var argb = AbstractEnumTools.getValues(AppColors);
         var argb =  [ Violet, Indigo, Blue, Green, Yellow, Orange, Red, Black, LightGrey, MidGrey, DarkGrey, NearlyBlack, White ];
+        var arrayTri = new Float32FlatTriangle(100);
         var arrayColor = new Float32FlatRGBA(100);
         for( c in argb ){
+            trace( 'c ' + StringTools.hex( c ) );
             arrayColor.argb = c;
             arrayColor.next();
         }
+        trace( 'arrayColor ' + arrayColor.length );
         trace( 'arrayColor list of colors contained as r, g, b, a Floats ' );
-        arrayColor.pos = 0;
-        for( i in arrayColor ) trace( '0x'+arrayColor.hex() );
+        arrayColor.pos = 0;//-1;
+        trace( arrayColor.length );
+        trace( 'start ');
+        for( i in 0...arrayColor.length ) {
+            trace( 'arrayColor.pos ' + arrayColor.pos );
+            trace( i + ' ' + arrayColor.hex() );
+            trace( StringTools.hex(argb[i]));
+            arrayColor.next();
+        }
+        trace( arrayColor.hexAll() );
+        trace( 'end ' );
         trace( 'pos ' + arrayColor.pos );
-        trace( 'len ' + arrayColor.length );
-        trace( arrayColor.getArray() );
+        //trace( 'len ' + arrayColor.length );
+        var arr =  arrayColor.getArray();
+        for( i in 0...arr.length ){
+            trace( 'i ' + i );
+            trace( StringTools.hex( Math.round( arr[i] * 255 ) ) );
+        }
     }
 }
