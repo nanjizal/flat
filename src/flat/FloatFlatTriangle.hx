@@ -251,9 +251,9 @@ abstract FloatFlatTriangle( FloatFlat9 ){
     }
     public inline
     function prettyString(){
-        return  '{ ax: ' + ax + ', ay: ' + ay + ', az ' + az + ' }' + '\n' +
-                '{ bx: ' + bx + ', by: ' + by + ', bz ' + bz + ' }' + '\n' +
-                '{ cx: ' + cx + ', cy: ' + cy + ', az ' + cz + ' }' + '\n';
+        return  '{ ax: ' + ax + ', ay: ' + ay + ', az: ' + az + ' }' + '\n' +
+                '{ bx: ' + bx + ', by: ' + by + ', bz: ' + bz + ' }' + '\n' +
+                '{ cx: ' + cx + ', cy: ' + cy + ', az: ' + cz + ' }' + '\n';
     }
     public inline
     function prettyAll(){
