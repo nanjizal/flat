@@ -85,9 +85,9 @@ abstract FloatFlatTriangle( FloatFlat9 ){
         var pa = new Matrix1x4( { x: ax, y: ay, z: az, w: 1. } );
         var pb = new Matrix1x4( { x: bx, y: by, z: bz, w: 1. } );
         var pc = new Matrix1x4( { x: cx, y: cy, z: cz, w: 1. } );
-        pa.transformPoint( m );
-        pb.transformPoint( m );
-        pc.transformPoint( m );
+        pa = pa.transformPoint( m );
+        pb = pb.transformPoint( m );
+        pc = pc.transformPoint( m );
         ax = pa.x;
         ay = pa.y;
         az = pa.z;
