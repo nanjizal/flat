@@ -94,9 +94,9 @@ abstract Float32FlatTriangle( Float32Flat9 ){
         bx = pb.x;
         by = pb.y;
         bz = pb.z;
-        cx = pb.x;
-        cy = pb.y;
-        cz = pb.z; 
+        cx = pc.x;
+        cy = pc.y;
+        cz = pc.z; 
     }
     public
     function transformAll( m: Matrix4x3 ) {
