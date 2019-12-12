@@ -1,0 +1,12 @@
+{
+  "name"         : "flat",
+  "url"          : "https://github.com/nanjizal/flat",
+  "license"      : "MIT",
+  "classPath"    : "src",
+  "tags"         : ["cross","triangle","drawing","flash","openfl","nme","js","java"],
+  "description"  : "Flat - Abstracts over arrays",
+  "version"      : "0.0.1",
+  "releasenote"  : "Initial release",
+  "contributors" : ["Nanjizal"],
+  "dependencies" : {geom}
+}
