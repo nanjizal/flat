@@ -8,5 +8,5 @@
   "version"      : "0.0.1",
   "releasenote"  : "Initial release",
   "contributors" : ["Nanjizal"],
-  "dependencies" : {"geom":""}
+  "dependencies" : {}
 }
