@@ -1,5 +1,5 @@
-# Flat
-Flat abstract array structures.
+# flat
+flat abstract array structures.
 
 Initial test of Float32FlatRGBA seems to work well, see trial0.
 
