@@ -86,7 +86,11 @@ abstract FloatFlatRGBA( FloatFlat4 ){
     function writeItem( k: Int, v: Float ): Float {
         return this.writeItem( k, v );
     }
-    public
+    public inline
+    function colorTriangles( color: Int, times: Int ){
+        for( i in 0...times ) cornerColors( color, color, color );
+    }
+    public inline
     function cornerColors( colorA: Int, colorB: Int, colorC: Int ) {
         argb = colorA;
         this.next();
