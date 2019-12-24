@@ -1,6 +1,6 @@
 {
   "name"         : "flat",
-  "url"          : "https://github.com/nanjizal/flat",
+  "url"          : "https://github.com/nanjizal/flat#flat",
   "license"      : "MIT",
   "classPath"    : "src",
   "tags"         : ["cross","triangle","drawing","flash","openfl","nme","js","java"],
