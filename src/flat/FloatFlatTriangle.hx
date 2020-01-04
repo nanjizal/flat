@@ -1,7 +1,7 @@
 package flat;
 import flat.FloatFlat9;
-import geom.Matrix4x3;
-import geom.Matrix1x4;
+import geom.matrix.Matrix4x3;
+import geom.matrix.Matrix1x4;
 // effectively 2D with z coordinates for depth etc... at the moment.
 @:forward
 abstract FloatFlatTriangle( FloatFlat9 ){
